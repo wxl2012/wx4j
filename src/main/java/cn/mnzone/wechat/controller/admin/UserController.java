@@ -1,8 +1,7 @@
 package cn.mnzone.wechat.controller.admin;
 
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,21 +18,20 @@ public class UserController{
 
     @RequestMapping("/list")
     public String list(){
+        logger.debug("list");
+
         return "admin/user/list";
     }
 
     @RequestMapping("/save")
     public String save(){
-        System.out.println("save...");
+        logger.debug("save");
         return "admin/user/details";
     }
 
     @RequestMapping("/view")
     public String view(){
-        System.out.println("aaaa");
-        Logger log = LogManager.getLogger(UserController.class);
-        log.debug("view");
-        //logger.debug("UserController/view");
+        logger.debug("view");
         return "admin/user/view";
     }
 }

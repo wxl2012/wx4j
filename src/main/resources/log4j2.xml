@@ -1,63 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- status=debug 可以查看log4j的装配过程 -->
-<configuration status="off" monitorInterval="1800">
+<Configuration>
+
     <properties>
-        <property name="LOG_HOME">/log/fish</property>
-        <!-- 日志备份目录 -->
-        <property name="BACKUP_HOME">{LOG_HOME}/backup</property>
-        <property name="STAT_NAME">stat</property>
-        <property name="SERVER_NAME">global</property>
+        <property name="logPath">/Users/fqwl/j2ee/wx4j/runtime/logs</property>
     </properties>
-    <appenders>
-        <!-- 定义控制台输出 -->
-        <Console name="Console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+
+    <Appenders>
+
+        <Console name="Console">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <!-- 程序员调试日志 -->
-        <RollingRandomAccessFile name="DevLog" fileName="${LOG_HOME}/${SERVER_NAME}"
-                                 filePattern="${LOG_HOME}/${SERVER_NAME}.%d{yyyy-MM-dd-HH}.log">
-            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+
+        <!--<File name="LogFile" filename="${sys:catalina.home}/logs/automation.log">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+        </File>-->
+
+        <RollingFile name="RollingFile" filename="${logPath}/automation.log"
+                     filepattern="${logPath}/%d{YYYYMMddHHmmss}-automation.log">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
             <Policies>
-                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
-        </RollingRandomAccessFile>
-        <!-- 游戏产品数据分析日志 -->
-        <RollingRandomAccessFile name="ProductLog"
-                                 fileName="${LOG_HOME}/${SERVER_NAME}_${STAT_NAME}"
-                                 filePattern="${LOG_HOME}/${SERVER_NAME}_${STAT_NAME}.%d{yyyy-MM-dd-HH}.log">
-            <PatternLayout
-                    pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
-            <Policies>
-                <TimeBasedTriggeringPolicy interval="1"
-                                           modulate="true" />
-            </Policies>
-        </RollingRandomAccessFile>
-    </appenders>
-    <loggers>
-        <!-- 3rdparty Loggers -->
-        <logger name="org.springframework.core" level="info">
-        </logger>
-        <logger name="org.springframework.beans" level="info">
-        </logger>
-        <logger name="org.springframework.context" level="info">
-        </logger>
-        <logger name="org.springframework.web" level="info">
-        </logger>
-        <logger name="org.jboss.netty" level="warn">
-        </logger>
-        <logger name="org.apache.http" level="warn">
-        </logger>
-        <logger name="com.mchange.v2" level="warn">
-        </logger>
-        <!-- Game Stat  logger -->
-        <logger name="com.u9.global.service.log" level="info"
-                additivity="false">
-            <appender-ref ref="ProductLog" />
-        </logger>
-        <!-- Root Logger -->
-        <root level="DEBUG">
-            <appender-ref ref="DevLog" />
-            <appender-ref ref="Console" />
-        </root>
-    </loggers>
-</configuration>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Root level="debug">
+            <AppenderRef ref="Console" />
+            <!-- <AppenderRef ref="LogFile" /> -->
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+</Configuration>
