@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/wxapi")
-public class WXApiController {
+public class WXApiController extends BaseController{
 
     @RequestMapping("/action")
     public String action(){
@@ -21,5 +21,10 @@ public class WXApiController {
     @RequestMapping("/oauth2_callback")
     public String oauth2Callback(){
         return "oauth2_callback";
+    }
+
+    @RequestMapping("/list")
+    public String list(){
+        return "goods/index";
     }
 }

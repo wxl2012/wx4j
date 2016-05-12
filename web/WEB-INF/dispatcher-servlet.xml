@@ -16,5 +16,12 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
+    <mvc:interceptors>
+        <!--<bean class="cn.mnzone.wechat.interceptor.LoginInterceptor"/>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/*.do"/>
+            <bean class="cn.mnzone.wechat.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>
